@@ -10,10 +10,9 @@ my_memmove proc
 
 	mov ebp, esp ;”казатель на стек
 	
-	mov edi, [ebp + 12] ; buffer +12 т. к. call запихивает в стек адрес возврата, а € ebp и ebx(по 4 байта они)
+	mov edi, [ebp + 12] ; buffer //адрес возврата + ebp + ebx(все по 4 байта они)
 	mov esi, [ebp + 16] ; source
 	mov ecx, [ebp + 20] ; len
-	mov ebx, edi
 
 	cmp edi, esi ; ≈сли начало и конец совпадает => выход
 	je exit
@@ -31,9 +30,9 @@ my_memmove proc
 
 	; »наче
 	add edi, ecx
-	sub edi, 1
+	dec edi
 	add esi, ecx
-	sub esi, 1
+	dec esi
 
 	std
 	rep movsb
@@ -41,10 +40,6 @@ my_memmove proc
 	jmp exit
 
 copy:
-	push esi
-	mov esi, ecx
-	pop esi
-
 	rep movsb
 
 exit:
